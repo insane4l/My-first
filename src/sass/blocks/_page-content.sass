@@ -7,19 +7,46 @@
     margin: 0 auto
     padding: 0 80px
   
-.data
-    padding-top: 40px
+.data, .result
+    padding: 40px 0
 .articles
     display: flex
     justify-content: space-between
     margin-bottom: 70px
     &-block
         width: 45%
-
-.budget-row, .expenses-row
+        padding: 0 20px
+.data-list
+    width: 100%
+.data-li
     display: flex
     justify-content: space-between
+    position: relative
     margin-bottom: 10px
+.remove-li
+    position: absolute
+    top: 50%
+    left: -17.5px
+    transform: translateY(-50%)
+    width: 15px
+    height: 15px
+    background: url(../images/remove.svg) center / contain no-repeat
+    cursor: pointer
+    opacity: 0.6
+.articles-block .buttons-row
+    position: relative
+.add-li
+    position: absolute
+    top: 50%
+    left: -17.5px
+    transform: translateY(-50%)
+    width: 15px
+    height: 15px
+    background: green url(../images/add.svg) center / 7px no-repeat
+    border-radius: 2px
+    cursor: pointer
+    opacity: 0.6
+
 .budget-item, .expenses-item
     width: 48%
 .buttons-row
@@ -62,5 +89,25 @@
 
     
 
-.result-content
-    display: flex
+
+.result
+    .buttons-row
+        margin-top: 10px
+    .reset-btn
+        margin-left: 5px
+    &-content
+        display: flex
+        padding: 40px
+        background-color: #ffffff
+        border-radius: 5px
+        box-shadow: 0 2.5px 10px 0 rgba(1,0,42,.1)
+    &-value
+        color: $positive-value-color
+.percentage-block
+    margin-right: 50px
+.daybudget
+    margin-top: 20px
+.expenses-percentage
+    color: $neutral-value-color
+.expenses-value
+    color: $negative-value-color
