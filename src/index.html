@@ -23,13 +23,13 @@
                     <h3 class="block-title">Введите доходы:</h3>
                     <ul class="data-list">
                         <li class="data-li">
-                            <input class="input budget-item" type="text" placeholder="Источник дохода">
-                            <input class="input budget-item" type="text" placeholder="Сумма">
+                            <input class="input budget-input" type="text" placeholder="Источник дохода">
+                            <input class="input budget-input" type="text" placeholder="Сумма">
                             <button class="remove-li"></button>
                         </li>
                         <li class="data-li">
-                            <input class="input budget-item" type="text" placeholder="Источник дохода">
-                            <input class="input budget-item" type="text" placeholder="Сумма">
+                            <input class="input budget-input" type="text" placeholder="Источник дохода">
+                            <input class="input budget-input" type="text" placeholder="Сумма">
                             <button class="remove-li"></button>
                         </li>
                     </ul>
@@ -44,13 +44,13 @@
                     <h3 class="block-title">Введите расходы:</h3>
                     <ul class="data-list">
                         <li class="data-li">
-                            <input class="input expenses-item" type="text" placeholder="Наименование">
-                            <input class="input expenses-item" type="text" placeholder="Сумма">
+                            <input class="input expenses-input" type="text" placeholder="Наименование">
+                            <input class="input expenses-input" type="text" placeholder="Сумма">
                             <button class="remove-li"></button>
                         </li>
                         <li class="data-li">
-                            <input class="input expenses-item" type="text" placeholder="Наименование">
-                            <input class="input expenses-item" type="text" placeholder="Сумма">
+                            <input class="input expenses-input" type="text" placeholder="Наименование">
+                            <input class="input expenses-input" type="text" placeholder="Сумма">
                             <button class="remove-li"></button>
                         </li>
                     </ul>
@@ -66,10 +66,10 @@
                 <div class="daybudget-block">
                     <h3 class="block-title">Рассчитать дневной бюджет:</h3>
                     <div class="daybudget-options">
-                        <input id="allbudget-radio" class="input daybudget-input" type="radio">
+                        <input id="allbudget-radio" class="input daybudget-input" name="countDayBudget" type="radio">
                         <label for="allbudget-radio" class="daybudget-label">*из общего дохода</label>
         
-                        <input id="balance-radio" class="input daybudget-input" type="radio">
+                        <input id="balance-radio" class="input daybudget-input" name="countDayBudget" type="radio" checked>
                         <label for="balance-radio" class="daybudget-label">*из остатка</label>
                     </div>
                 </div>
