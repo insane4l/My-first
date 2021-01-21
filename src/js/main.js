@@ -77,7 +77,7 @@ clearExpensesBtn.addEventListener('click', function() {
 });
 
 
-//button -> summarize income money
+//button -> summarize income money and disable inputs
 let summarizeBudget = function() {
     let budgetInput = document.querySelectorAll('.budget-input'),
         sum = 0;
@@ -94,7 +94,7 @@ let summarizeBudget = function() {
 let confirmBudgetBtn = document.querySelector('.confirm-budget-btn');
 confirmBudgetBtn.addEventListener('click', summarizeBudget);
 
-//button -> summarize expenses and create expanses list to appData
+//button -> summarize expenses and create expanses list to appData (also disable inputs)
 let summarizeExpenses = function() {
     let expensesInput = document.querySelectorAll('.expenses-input'),
         sum = 0;
@@ -117,21 +117,81 @@ confirmExpensesBtn.addEventListener('click', summarizeExpenses);
 
 
 //count day budget 
+Date.prototype.getMonthDays = function () {
+    return 33 - new Date(this.getFullYear(), this.getMonth(), 33).getDate();
+};
+// let budgetDate = new Date( Date.parse('2021-02') );
+// console.log(budgetDate);
+// console.log(budgetDate.getMonthDays());
 
 let countDayBudget = function() {
-    let allBudgetRadio = document.querySelector('#allbudget-radio'),
-        balanceRadio = document.querySelector('#balance-radio');
-    if (allBudgetRadio.checked == true) {
-        appData.dayBudget = appData.income / 30;
-        console.warn('check appData.date 28 30 31 days??????');
-    } else if (balanceRadio.checked == true) {
-        appData.dayBudget = appData.balance / 30;
-        console.warn('check appData.date 28 30 31 days??????');
+    let allBudgetOption = document.querySelector('#allbudget-option'),
+        balanceOption = document.querySelector('#balance-option'),
+        dateInput = document.querySelector('.time-data-input'),
+        budgetDate = new Date( Date.parse(dateInput.value) ),
+        dayBudget = document.querySelector('.daybudget .result-value');
+    if (allBudgetOption.checked == true) {
+        appData.dayBudget = appData.income / budgetDate.getMonthDays();
+    } else if (balanceOption.checked == true) {
+        appData.dayBudget = appData.balance / budgetDate.getMonthDays();
+    } else {
+        alert('Произошла ошибка, пожалуйста выберите из какой суммы расчитать бюджет на день');
     }
+    dayBudget.textContent = appData.dayBudget;
+};
+
+let countBalance = function() {
+    let balance = document.querySelector('.balance .result-value');
+    appData.balance = appData.income - appData.expenses;
+    balance.textContent = appData.balance;
+    console.warn('need count before daybudget');
+};
+
+let countPercentage = function() {
+    let i = 0;
+    for (let key in appData.expensesList) {
+        let percentageBlock = document.querySelector('.percentage-block'),
+            percentageItem = document.createElement('div');
+
+        percentageItem.classList.add('percentage-item');
+        percentageItem.innerHTML = `
+            <div class="expenses-name"></div>
+            <div class="expenses-percentage"></div>`;
+        percentageBlock.appendChild(percentageItem);
+
+        let expensesName = document.querySelectorAll('.expenses-name'),
+            expensesPrecentage = document.querySelectorAll('.expenses-percentage');
+            
+        
+        expensesName[i].textContent = key + ':';
+        expensesPrecentage[i].textContent = ( appData.expensesList[key] / (appData.expenses / 100) ) + '%';
+        i++;
+
+    }
+};
+//count Incoming and Expenses
+let countIncExp = function() {
+    let income = document.querySelector('.income .result-value'),
+        expenses = document.querySelector('.expenses .result-value');
+    income.textContent = appData.income;
+    expenses.textContent = appData.expenses;
+};
+
+
+let showResult = function() {
+
 };
 
 
 
+//START
+
+
+
+
+
+let start = document.querySelector('.start');
+start.addEventListener('click', countDayBudget);
 
 
 
