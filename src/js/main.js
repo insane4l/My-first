@@ -17,7 +17,24 @@ let addBudgetBtn = document.querySelector('.add-budget'),
 //button -> remove 'this' list-item (.data-li)
 let removeLI = function(event) {
     let thisListItem = event.target.closest('.data-li');
-    thisListItem.style.display = 'none';
+    
+    if ( thisListItem.closest('.budget-block') ) {
+        let budgetInput = document.querySelectorAll('.budget-input');
+        thisListItem.remove();
+        summarizeBudget();
+        console.warn('change variable scope of this function');///how its still working now???
+        budgetInput.forEach( (item) => item.disabled = false );
+        console.dir(appData);
+    } else if ( thisListItem.closest('.expenses-block') ) {
+        let expensesInput = document.querySelectorAll('.expenses-input');
+        thisListItem.remove();
+        appData.expensesList = {}; //maybe "for in" + "delete appData.[key]"
+        summarizeExpenses();
+        console.warn('change variable scope of this function');
+        expensesInput.forEach( (item) => item.disabled = false );
+        console.dir(appData);
+    }
+    
 };
 
 let findAllRemoveBtns = function() {
@@ -76,19 +93,30 @@ clearExpensesBtn.addEventListener('click', function() {
     expensesInput.forEach( (item) => {item.value = ''; item.disabled = false});
 });
 
-
+// let budgetInput = document.querySelectorAll('.budget-input');
+//     budgetInput[0].value = 'kuku';
+//     budgetInput[1].value = '1000';
+//     budgetInput[2].value = 'himan';
+//     budgetInput[3].value = '2000';
 //button -> summarize income money and disable inputs
 let summarizeBudget = function() {
     let budgetInput = document.querySelectorAll('.budget-input'),
         sum = 0;
 
     budgetInput.forEach(function(item, i) {
-        if (i%2 !== 0) {
+        item.disabled = true;
+        if ( i%2 !== 0 && !isNaN(+budgetInput[i].value) && budgetInput[i].value !== '' && +budgetInput[i].value > 0) {
             sum = sum + +budgetInput[i].value;
+        } else if ( 
+            ( i%2 !== 0 && (isNaN(+budgetInput[i].value) || budgetInput[i].value == '' || +budgetInput[i].value <= 0) )
+            || ( i%2 == 0 && (!isNaN(+budgetInput[i].value) || budgetInput[i].value == '' || budgetInput[i].value.length <= 1) )
+            ) {
+            item.disabled = false;
+            alert('Введите корректные значения');
         }
     });
     appData.income = sum;
-    budgetInput.forEach( (item) => item.disabled = true);
+    console.dir(appData);
 };
 
 let confirmBudgetBtn = document.querySelector('.confirm-budget-btn');
@@ -109,6 +137,7 @@ let summarizeExpenses = function() {
     });
     appData.expenses = sum;
     expensesInput.forEach( (item) => item.disabled = true);
+    console.dir(appData);
 };
 
 let confirmExpensesBtn = document.querySelector('.confirm-expenses-btn');
@@ -123,28 +152,36 @@ Date.prototype.getMonthDays = function () {
 // let budgetDate = new Date( Date.parse('2021-02') );
 // console.log(budgetDate);
 // console.log(budgetDate.getMonthDays());
+let checkDate = function() {
+    let dateInput = document.querySelector('.time-data-input'),
+    budgetDate = new Date( Date.parse(dateInput.value) );
+
+    if ( dateInput.value.match(/\d\d\d\d\-\d\d/gi) ) {
+        console.log('TRUE');
+    } else {
+        console.log('FALSE');
+    }
+}
 
 let countDayBudget = function() {
     let allBudgetOption = document.querySelector('#allbudget-option'),
         balanceOption = document.querySelector('#balance-option'),
-        dateInput = document.querySelector('.time-data-input'),
-        budgetDate = new Date( Date.parse(dateInput.value) ),
         dayBudget = document.querySelector('.daybudget .result-value');
     if (allBudgetOption.checked == true) {
-        appData.dayBudget = appData.income / budgetDate.getMonthDays();
+        appData.dayBudget = +( appData.income / budgetDate.getMonthDays() ).toFixed(1);
     } else if (balanceOption.checked == true) {
-        appData.dayBudget = appData.balance / budgetDate.getMonthDays();
+        appData.dayBudget = +( appData.balance / budgetDate.getMonthDays() ).toFixed(1);
     } else {
         alert('Произошла ошибка, пожалуйста выберите из какой суммы расчитать бюджет на день');
     }
     dayBudget.textContent = appData.dayBudget;
 };
 
-let countBalance = function() {
+let countBalance = function(callback) {
     let balance = document.querySelector('.balance .result-value');
     appData.balance = appData.income - appData.expenses;
     balance.textContent = appData.balance;
-    console.warn('need count before daybudget');
+    callback();
 };
 
 let countPercentage = function() {
@@ -164,7 +201,7 @@ let countPercentage = function() {
             
         
         expensesName[i].textContent = key + ':';
-        expensesPrecentage[i].textContent = ( appData.expensesList[key] / (appData.expenses / 100) ) + '%';
+        expensesPrecentage[i].textContent = Math.round( appData.expensesList[key] / (appData.expenses / 100) ) + '%';
         i++;
 
     }
@@ -179,7 +216,9 @@ let countIncExp = function() {
 
 
 let showResult = function() {
-
+    countBalance(countDayBudget);
+    countIncExp();
+    countPercentage();
 };
 
 
@@ -191,8 +230,7 @@ let showResult = function() {
 
 
 let start = document.querySelector('.start');
-start.addEventListener('click', countDayBudget);
-
+start.addEventListener('click', checkDate);
 
 
 
