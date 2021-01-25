@@ -105,14 +105,16 @@ let summarizeBudget = function() {
 
     budgetInput.forEach(function(item, i) {
         item.disabled = true;
-        if ( i%2 !== 0 && !isNaN(+budgetInput[i].value) && budgetInput[i].value !== '' && +budgetInput[i].value > 0) {
-            sum = sum + +budgetInput[i].value;
+        if ( i%2 !== 0 && !isNaN(+item.value) && item.value !== '' && +item.value > 0 ) {
+            sum = sum + +item.value;
         } else if ( 
-            ( i%2 !== 0 && (isNaN(+budgetInput[i].value) || budgetInput[i].value == '' || +budgetInput[i].value <= 0) )
-            || ( i%2 == 0 && (!isNaN(+budgetInput[i].value) || budgetInput[i].value == '' || budgetInput[i].value.length <= 1) )
+            ( i%2 !== 0 && (isNaN(+item.value) || item.value == '' || +item.value <= 0) )
+            || ( i%2 == 0 && (!isNaN(+item.value) || item.value == '' || item.value.length <= 1) )
             ) {
             item.disabled = false;
-            alert('Введите корректные значения');
+            item.value = '';
+            alert('Введите корректное значение в поле номер ' + ++i);
+            item.placeholder = i;
         }
     });
     appData.income = sum;
@@ -125,20 +127,40 @@ confirmBudgetBtn.addEventListener('click', summarizeBudget);
 //button -> summarize expenses and create expanses list to appData (also disable inputs)
 let summarizeExpenses = function() {
     let expensesInput = document.querySelectorAll('.expenses-input'),
-        sum = 0;
-
+        sum = 0,
+        errorStatus = false;
     expensesInput.forEach(function(item, i) {
-        if (i%2 == 0) {
-            let expenseName = item.value;
-            appData.expensesList[expenseName] = +expensesInput[++i].value;
-        } else {
-            sum = sum + +expensesInput[i].value;
-        }
-    });
+        item.disabled = true;
+    if (i%2 == 0 && isNaN(+item.value) && item.value !== '' && item.value.length > 1) {
+        let expenseName = item.value;
+        console.log('TRUE 1 input');
+        appData.expensesList[expenseName] = +expensesInput[++i].value;
+    } else if (i%2 !== 0 && !isNaN(+item.value) && item.value !== '' && +item.value > 0 ) {
+        sum = sum + +expensesInput[i].value;
+        console.log('TRUE 2 input');
+    } else if ( 
+        ( i%2 == 0 && (!isNaN(+item.value) || item.value == '' || item.value.length <= 1) )
+        || ( i%2 !== 0 && (isNaN(+item.value) || item.value == '' || +item.value <= 0) ) 
+        ) {
+        
+        item.disabled = false;
+        item.value = '';
+        errorStatus = true;
+        appData.expenses = 0;
+        appData.expensesList = {};
+        
+        console.log('FALSE');
+    } else {
+        alert('Произошла ошибка' );
+    }
+});
+    if (errorStatus === true) {
+    alert('Введите корректные значения в пустые поля' );
+    }
     appData.expenses = sum;
-    expensesInput.forEach( (item) => item.disabled = true);
     console.dir(appData);
 };
+
 
 let confirmExpensesBtn = document.querySelector('.confirm-expenses-btn');
 confirmExpensesBtn.addEventListener('click', summarizeExpenses);
@@ -149,28 +171,32 @@ confirmExpensesBtn.addEventListener('click', summarizeExpenses);
 Date.prototype.getMonthDays = function () {
     return 33 - new Date(this.getFullYear(), this.getMonth(), 33).getDate();
 };
-// let budgetDate = new Date( Date.parse('2021-02') );
-// console.log(budgetDate);
-// console.log(budgetDate.getMonthDays());
+
 let checkDate = function() {
     let dateInput = document.querySelector('.time-data-input'),
     budgetDate = new Date( Date.parse(dateInput.value) );
-
     if ( dateInput.value.match(/\d\d\d\d\-\d\d/gi) ) {
-        console.log('TRUE');
+        countDayBudget(budgetDate);
     } else {
-        console.log('FALSE');
+        alert('Пожалуйста введите дату согласно заданному формату, например: 2021-01');
     }
+    
+    let months = ['январь', 'февраль', 'март', 'апрель', 'май', 'июнь',
+    'июль', 'август', 'сентябрь', 'октябрь', 'ноябрь', 'декабрь'],
+        budgetMonth = budgetDate.getMonth(),
+        budgetYear = budgetDate.getFullYear(),
+        dateTitle = document.querySelector('.budget-date');
+    dateTitle.textContent = (months[budgetMonth] + ' ' + budgetYear);
 }
 
-let countDayBudget = function() {
+let countDayBudget = function(inputMonth) {
     let allBudgetOption = document.querySelector('#allbudget-option'),
         balanceOption = document.querySelector('#balance-option'),
         dayBudget = document.querySelector('.daybudget .result-value');
     if (allBudgetOption.checked == true) {
-        appData.dayBudget = +( appData.income / budgetDate.getMonthDays() ).toFixed(1);
+        appData.dayBudget = +( appData.income / inputMonth.getMonthDays() ).toFixed(1);
     } else if (balanceOption.checked == true) {
-        appData.dayBudget = +( appData.balance / budgetDate.getMonthDays() ).toFixed(1);
+        appData.dayBudget = +( appData.balance / inputMonth.getMonthDays() ).toFixed(1);
     } else {
         alert('Произошла ошибка, пожалуйста выберите из какой суммы расчитать бюджет на день');
     }
@@ -216,7 +242,7 @@ let countIncExp = function() {
 
 
 let showResult = function() {
-    countBalance(countDayBudget);
+    countBalance(checkDate);
     countIncExp();
     countPercentage();
 };
@@ -230,7 +256,7 @@ let showResult = function() {
 
 
 let start = document.querySelector('.start');
-start.addEventListener('click', checkDate);
+start.addEventListener('click', showResult);
 
 
 
