@@ -39,7 +39,7 @@
                         <button class="button clear-budget-btn">Сбросить</button>
                     </div>
                 </div>
-
+                
                 <div class="articles-block expenses-block">
                     <h3 class="block-title">Введите расходы:</h3>
                     <ul class="data-list">
@@ -80,36 +80,38 @@
                 </div>
             </div>
             
+            <button class="button ready">Утвердить введенные данные</button>
             <button class="button start">Начать расчет</button>
         </section>
 
 
 
         <section class="result">
-            <h2 class="section-title">Расчет бюджета на <span class="budget-date"></span> года</h2>
+            <h2 class="section-title">Расчет бюджета <span class="budget-date"></span></h2>
             <div class="result-content">
+                <div class="close-result">&times</div>
                 <div class="percentage-block">
-                <!-- <div class="percentage-item">
-                    <div class="expenses-name"></div>
-                    <div class="expenses-percentage"></div>
-                </div> -->
+                    <!-- <div class="percentage-item">
+                        <div class="expenses-name">patternName</div>
+                        <div class="expenses-percentage">50%</div>
+                    </div> -->
                 </div>
 
                 <div class="budget-block">
-                    <div class="income">Доход в месяц: 
-                        <span class="result-value">4432</span>
+                    <div class="budget-block-item income">Доход в месяц: 
+                        <span class="result-value"></span>
                     </div>
                     
-                    <div class="expenses">Расходы в месяц: 
-                        <span class="result-value expenses-value">234</span>
+                    <div class="budget-block-item expenses">Расходы в месяц: 
+                        <span class="result-value expenses-value"></span>
                     </div>
                     
-                    <div class="balance">Баланс(остаток): 
-                        <span class="result-value">423</span>
+                    <div class="budget-block-item balance">Баланс(остаток): 
+                        <span class="result-value"></span>
                     </div>
 
-                    <div class="daybudget">Бюджет на 1 день: 
-                        <span class="result-value">fds</span>
+                    <div class="budget-block-item daybudget">Бюджет на 1 день: 
+                        <span class="result-value"></span>
                     </div>
                 </div>
             </div>
