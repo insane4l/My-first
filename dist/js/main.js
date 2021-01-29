@@ -182,12 +182,12 @@ let appData = {
             } else {
                 alert('Произошла ошибка, пожалуйста выберите из какой суммы расчитать бюджет на день');
             }
-            dayBudgetResult.textContent = ' ' + appData.dayBudget;
+            dayBudgetResult.textContent = appData.dayBudget;
         },
 
         countBalance: function() {
             appData.balance = appData.income - appData.expenses;
-            balanceResult.textContent = ' ' + appData.balance;
+            balanceResult.textContent = appData.balance;
         },
 
         countPercentage: function() {
@@ -204,14 +204,14 @@ let appData = {
                     expensesPrecentage = document.querySelectorAll('.expenses-percentage');
                           
                 expensesName[i].textContent = key + ':';
-                expensesPrecentage[i].textContent = ' ' + Math.round( appData.expensesList[key] / (appData.expenses / 100) ) + '%';
+                expensesPrecentage[i].textContent = '\u00A0' + Math.round( appData.expensesList[key] / (appData.expenses / 100) ) + '%';
                 i++;
             }
         },
 
         setIncExp: function() {
-            incomeResult.textContent = ' ' + appData.income;
-            expensesResult.textContent = ' ' + appData.expenses;
+            incomeResult.textContent = appData.income;
+            expensesResult.textContent = appData.expenses;
         },
 
         getStarted: function(callback) {
@@ -303,7 +303,6 @@ startBtn.addEventListener('click', appData.showResultPage);
 printBtn.addEventListener('click', appData.printResult);
 resetBtn.addEventListener('click', appData.reloadPage);
 closeResult.addEventListener('click', appData.reloadPage);
-
 
 
 
