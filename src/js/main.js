@@ -237,6 +237,10 @@ let appData = {
                     appData.countBalance();
                     readyBtn.style.display = 'none';
                     startBtn.style.display = 'block';
+                    setTimeout(function() {
+                        let animationMask = document.querySelector('.start .mask');
+                        animationMask.classList.add('show-mask');
+                    }, 500);
                 } else {
                     appData.verificationStatus.dateInput = false;
                     alert('Некорректно указан месяц. Допустимые значения от 01 до 12');
