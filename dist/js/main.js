@@ -265,8 +265,7 @@ let appData = {
             appData.countDayBudget(); //need run appData.checkDate() and appData.countBalance() before this 
             pageContent.style.transform = 'translateY' + '(-' + dataSection.clientHeight + 'px)';
             resultSection.style.display = 'block';
-            console.log(resultSection.clientHeight);
-            document.body.style.height = resultSection.clientHeight + 'px';
+            document.body.style.height = resultSection.clientHeight + 100 +'px';
         },
 
         printResult: function() {
