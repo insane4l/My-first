@@ -5,7 +5,7 @@
     padding: 22px 0
     font-size: 18px
     font-weight: bold
-    color: white
+    color: #fff
     text-align: center
     background-color: #444444
     z-index: 9999
@@ -17,6 +17,7 @@
 
 .data, .result
     padding-top: 106px
+
 .articles
     display: flex
     justify-content: space-between
@@ -51,7 +52,7 @@
     transform: translateY(-50%)
     width: 15px
     height: 15px
-    background: green url(../images/add.svg) center / 7px no-repeat
+    background: #4ea501 url(../images/add.svg) center / 7px no-repeat
     border-radius: 2px
     cursor: pointer
     opacity: 0.6
@@ -78,8 +79,6 @@
 .daybudget-input
     margin-left: 20px
     cursor: pointer
-.daybudget-input checked
-    width: 200px
 .daybudget-label
     font-size: 14px
     cursor: pointer
@@ -110,7 +109,7 @@
     transform: translate3d(120%, -100px, 0) rotate3d(0, 0, 1, 90deg)
 
 .data .start, .data .ready
-    margin: 0 auto
+    margin: 0 auto 60px auto
     height: 50px
     padding: 0 40px
     font-size: 14px
@@ -120,6 +119,7 @@
 
 .result
     display: none
+    padding-bottom: 60px
     .buttons-row
         margin-top: 10px
     .reset-btn
@@ -162,3 +162,14 @@
     color: $negative-value-color
 .expenses-name, .expenses-percentage
     display: inline-block
+
+.footer
+    position: fixed
+    bottom: 0
+    width: 100%
+    padding: 8px 0
+    text-align: center
+    font-size: 11px
+    font-weight: 300
+    color: #fff
+    background-color: #444444
