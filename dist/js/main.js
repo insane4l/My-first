@@ -11,6 +11,7 @@ Date.prototype.getMonthDays = function () {
 let pageContent = document.querySelector('.main-content'),
     dataSection = document.querySelector('.main-content .data'),
     resultSection = document.querySelector('.main-content .result'),
+    articlesBlock = document.querySelectorAll('.articles-block'),
 
     dateInput = document.querySelector('.time-data-input'),
 
@@ -45,25 +46,23 @@ let appData = {
             dateInput: false
         },
 
-        findAllRemoveBtns: function() {
-            let removeBtn = document.querySelectorAll('.remove-li');
-            removeBtn.forEach( (item) => item.addEventListener('click', appData.removeLI) );
-        },
-
         removeLI: function(event) {
-            let thisListItem = event.target.closest('.data-li');
-            if ( thisListItem.closest('.budget-block') ) {
+            let target = event.target,
+                removeBtn = target.matches('button.remove-li'),
+                thisListItem = event.target.closest('.data-li');
+
+            if ( removeBtn && thisListItem.closest('.budget-block') ) {
                 let budgetInputs = document.querySelectorAll('.budget-input');
                 thisListItem.remove();
                 appData.income = 0;
                 budgetInputs.forEach( (item) => item.disabled = false );
-            } else if ( thisListItem.closest('.expenses-block') ) {
+            } else if ( removeBtn && thisListItem.closest('.expenses-block') ) {
                 let expensesInputs = document.querySelectorAll('.expenses-input');
                 thisListItem.remove();
                 appData.expensesList = {};
                 appData.expenses = 0;
                 expensesInputs.forEach( (item) => item.disabled = false );
-            }   
+            }
         },
 
         addBudgetLI: function() {
@@ -76,7 +75,6 @@ let appData = {
                 <input class="input budget-input" type="text" placeholder="Сумма">
                 <button class="remove-li"></button>`;
             budgetList.appendChild(budgetListItem);
-            appData.findAllRemoveBtns();
         },
 
         addExpensesLI: function() {
@@ -89,7 +87,6 @@ let appData = {
                 <input class="input expenses-input" type="text" placeholder="Сумма">
                 <button class="remove-li"></button>`;
             expensesList.appendChild(expensesListItem);
-            appData.findAllRemoveBtns();
         },
 
         summarizeBudget: function() {
@@ -293,11 +290,11 @@ let appData = {
 
 
 
-
-appData.findAllRemoveBtns();
+    
 
 addBudgetBtn.addEventListener('click', appData.addBudgetLI);
 addExpensesBtn.addEventListener('click', appData.addExpensesLI);
+articlesBlock.forEach( function(item) { item.addEventListener('click', appData.removeLI) } );
 confirmBudgetBtn.addEventListener('click', appData.summarizeBudget);
 confirmExpensesBtn.addEventListener('click', appData.summarizeExpenses);
 clearBudgetBtn.addEventListener('click', appData.clearInputs);
