@@ -8,7 +8,7 @@ Date.prototype.getMonthDays = function () {
 };
 
 
-let pageContent = document.querySelector('.main-content'),
+const pageContent = document.querySelector('.main-content'),
     dataSection = document.querySelector('.main-content .data'),
     resultSection = document.querySelector('.main-content .result'),
     articlesBlock = document.querySelectorAll('.articles-block'),
@@ -34,7 +34,7 @@ let pageContent = document.querySelector('.main-content'),
     balanceResult = document.querySelector('.balance .result-value');
 
     
-let appData = {
+const appData = {
         income: 0,
         expenses: 0,
         expensesList: {},
@@ -194,14 +194,18 @@ let appData = {
                 percentageItem.classList.add('percentage-item');
                 percentageItem.innerHTML = `
                     <div class="expenses-name"></div>
+                    <div class="expenses-value"></div>
                     <div class="expenses-percentage"></div>`;
                 percentageBlock.appendChild(percentageItem);
 
                 let expensesName = document.querySelectorAll('.expenses-name'),
-                    expensesPrecentage = document.querySelectorAll('.expenses-percentage');
+                    expensesValue = document.querySelectorAll('.expenses-value'),
+                    expensesPrecentage = document.querySelectorAll('.expenses-percentage'),
+                    percentageValue = Math.round( appData.expensesList[key] / (appData.expenses / 100) );
                           
                 expensesName[i].textContent = key + ':';
-                expensesPrecentage[i].textContent = '\u00A0' + Math.round( appData.expensesList[key] / (appData.expenses / 100) ) + '%';
+                expensesValue[i].textContent = appData.expensesList[key];
+                expensesPrecentage[i].textContent = `(${percentageValue}%)`;
                 i++;
             }
         },
@@ -211,7 +215,7 @@ let appData = {
             expensesResult.textContent = appData.expenses;
         },
 
-        getStarted: function(callback) {
+        getStarted: function() {
             //verificate all data-list inputs
             let dataListInputs = document.querySelectorAll('.data-list .input');
             appData.verificationStatus.dataListInputs = true;
@@ -286,24 +290,28 @@ let appData = {
         },
 
         reloadPage: () => window.location.href = window.location.href,
-    };
+};
 
 
 
-    
+const {
+    removeLI, addBudgetLI, addExpensesLI, summarizeBudget,
+    summarizeExpenses, clearInputs, getStarted,
+    showResultPage, printResult, reloadPage
+} = appData;
 
-addBudgetBtn.addEventListener('click', appData.addBudgetLI);
-addExpensesBtn.addEventListener('click', appData.addExpensesLI);
-articlesBlock.forEach( function(item) { item.addEventListener('click', appData.removeLI) } );
-confirmBudgetBtn.addEventListener('click', appData.summarizeBudget);
-confirmExpensesBtn.addEventListener('click', appData.summarizeExpenses);
-clearBudgetBtn.addEventListener('click', appData.clearInputs);
-clearExpensesBtn.addEventListener('click', appData.clearInputs);
-readyBtn.addEventListener('click', appData.getStarted);
-startBtn.addEventListener('click', appData.showResultPage);
-printBtn.addEventListener('click', appData.printResult);
-resetBtn.addEventListener('click', appData.reloadPage);
-closeResult.addEventListener('click', appData.reloadPage);
+addBudgetBtn.addEventListener('click', addBudgetLI);
+addExpensesBtn.addEventListener('click', addExpensesLI);
+articlesBlock.forEach( function(item) { item.addEventListener('click', removeLI) } );
+confirmBudgetBtn.addEventListener('click', summarizeBudget);
+confirmExpensesBtn.addEventListener('click', summarizeExpenses);
+clearBudgetBtn.addEventListener('click', clearInputs);
+clearExpensesBtn.addEventListener('click', clearInputs);
+readyBtn.addEventListener('click', getStarted);
+startBtn.addEventListener('click', showResultPage);
+printBtn.addEventListener('click', printResult);
+resetBtn.addEventListener('click', reloadPage);
+closeResult.addEventListener('click', reloadPage);
 
 
 
